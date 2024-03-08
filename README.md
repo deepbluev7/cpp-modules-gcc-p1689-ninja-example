@@ -49,3 +49,11 @@ Apart from the modulebuild script, 2 other scripts are necessary. One, as
 explained above, to do basically `cat $in > $out` for all the dyndep files. And
 another one to translate the output format from gcc into a dyndep file. These 2
 scripts could be combined, but I haven't bothered yet.
+
+You actually need to set the dependency output format to p1689r5 even when
+compiling the object files. Without that GCC will add the module dependencies
+also to the header dependency files, which makes Ninja yell at you:
+<https://github.com/ninja-build/ninja/issues/1962>
+
+You need to pass `-E` when discovering the dependency information with GCC,
+otherwise it will complain about missing GCM files.
