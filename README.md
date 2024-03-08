@@ -53,7 +53,13 @@ scripts could be combined, but I haven't bothered yet.
 You actually need to set the dependency output format to p1689r5 even when
 compiling the object files. Without that GCC will add the module dependencies
 also to the header dependency files, which makes Ninja yell at you:
-<https://github.com/ninja-build/ninja/issues/1962>
+<https://github.com/ninja-build/ninja/issues/1962>.
 
 You need to pass `-E` when discovering the dependency information with GCC,
 otherwise it will complain about missing GCM files.
+
+This uses gcc's default module mapper and only modifies its basepath. It however
+doesn't take into account the path sanitization gcc does (replacing stuff with
+`,` and such). You can find more about the default mapper in the second to last
+paragraph here:
+<https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Module-Mapper.html#C_002b_002b-Module-Mapper>.
